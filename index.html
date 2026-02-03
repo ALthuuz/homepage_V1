@@ -11,24 +11,30 @@ body {
   font-family: system-ui, sans-serif;
   background: #cfe9f8;
   color: #0f172a;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 .container {
-  padding: 24px;
+  text-align: center;
+  width: 100%;
+  max-width: 420px;
+  padding: 20px;
 }
 
 /* CLOCK */
 .clock {
   font-size: 88px;
   font-weight: 600;
-  text-align: center;
 }
 
 /* USER */
 .user {
   margin-top: 8px;
   font-size: 18px;
-  text-align: center;
 }
 
 /* SEARCH */
@@ -39,7 +45,7 @@ body {
 
 .search input {
   flex: 1;
-  padding: 16px 18px;
+  padding: 16px;
   border-radius: 30px;
   border: none;
   font-size: 16px;
@@ -48,7 +54,7 @@ body {
 
 .search button {
   margin-left: 10px;
-  padding: 16px 26px;
+  padding: 16px 24px;
   border-radius: 30px;
   border: none;
   background: #1d9bf0;
@@ -56,21 +62,27 @@ body {
   font-size: 16px;
 }
 
-/* QUOTE */
-.quote {
-  margin-top: 30px;
-  font-size: 16px;
-  max-width: 500px;
+/* AYAH */
+.ayah {
+  margin-top: 34px;
+  font-size: 26px;        /* 👈 BIGGER */
+  line-height: 2;         /* 👈 MORE BREATHING SPACE */
+  font-family: "Scheherazade New", "Amiri", serif;
+}
+
+.ayah small {
+  display: block;
+  margin-top: 12px;
+  font-size: 15px;
+  opacity: 0.75;
 }
 
 /* SHORTCUTS */
 .shortcuts {
   display: flex;
+  justify-content: center;
   gap: 16px;
-  margin-top: 300px;
-  padding-left: 600px;
-  padding-right: 600px;
-  align-items: baseline;
+  margin-top: 40px;
 }
 
 .shortcuts a {
@@ -89,33 +101,36 @@ body {
 </head>
 
 <body>
+
 <div class="container">
 
   <div class="clock" id="clock">00:00</div>
 
   <div class="user">
-    Sinan Valiyy😂😂<br>
+    Bilal Althaf<br>
     <small id="date"></small>
   </div>
 
-  <div class="search">
-    <input type="text" placeholder="Type here…">
-    <button>Search</button>
+  <form class="search" onsubmit="doSearch(event)">
+    <input type="text" id="query" placeholder="Type here…" autocomplete="off" autofocus>
+    <button type="submit">Search</button>
+  </form>
+
+  <div class="ayah" id="ayah">
+    Loading ayah…
   </div>
 
-  <div class="quote">
-    “Education costs money. But then so does ignorance.”<br>
-    <small>— Sir Claus Moser</small>
-  </div>
   <div class="shortcuts">
     <a href="https://youtube.com">▶</a>
     <a href="https://instagram.com">◎</a>
     <a href="https://mail.google.com">✉</a>
     <a href="https://web.telegram.org">✈</a>
   </div>
+
 </div>
 
 <script>
+/* TIME */
 function updateTime() {
   const now = new Date();
   document.getElementById("clock").innerText =
@@ -125,6 +140,29 @@ function updateTime() {
 }
 setInterval(updateTime, 1000);
 updateTime();
+
+/* SEARCH */
+function doSearch(e) {
+  e.preventDefault();
+  const q = document.getElementById("query").value.trim();
+  if (q !== "") {
+    window.location.href =
+      "https://www.google.com/search?q=" + encodeURIComponent(q);
+  }
+}
+
+/* RANDOM AYAH */
+fetch("https://api.alquran.cloud/v1/ayah/random")
+  .then(res => res.json())
+  .then(data => {
+    const a = data.data;
+    document.getElementById("ayah").innerHTML =
+      `${a.text}<small>— Surah ${a.surah.englishName}, Ayah ${a.numberInSurah}</small>`;
+  })
+  .catch(() => {
+    document.getElementById("ayah").innerText =
+      "Unable to load ayah right now.";
+  });
 </script>
 
 </body>
