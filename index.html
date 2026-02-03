@@ -1,44 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Althaf Home</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: system-ui, sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .box {
-      text-align: center;
-      padding: 20px;
-    }
-    h1 {
-      margin-bottom: 10px;
-    }
-    a {
-      display: block;
-      margin: 10px 0;
-      text-decoration: none;
-      color: #38bdf8;
-      font-size: 18px;
-    }
-  </style>
-</head>
-<body>
-  <div class="box">
-    <h1>Welcome, Althaf</h1>
-    <p>Focus > Comfort</p>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
 
-    <a href="https://google.com">Google</a>
-    <a href="https://youtube.com">YouTube</a>
-    <a href="https://chat.openai.com">ChatGPT</a>
+<style>
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #cfe9f8;
+  color: #0f172a;
+}
+
+.container {
+  padding: 24px;
+}
+
+/* CLOCK */
+.clock {
+  font-size: 88px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* USER */
+.user {
+  margin-top: 8px;
+  font-size: 18px;
+  text-align: center;
+}
+
+/* SEARCH */
+.search {
+  display: flex;
+  margin-top: 30px;
+}
+
+.search input {
+  flex: 1;
+  padding: 16px 18px;
+  border-radius: 30px;
+  border: none;
+  font-size: 16px;
+  outline: none;
+}
+
+.search button {
+  margin-left: 10px;
+  padding: 16px 26px;
+  border-radius: 30px;
+  border: none;
+  background: #1d9bf0;
+  color: white;
+  font-size: 16px;
+}
+
+/* QUOTE */
+.quote {
+  margin-top: 30px;
+  font-size: 16px;
+  max-width: 500px;
+}
+
+/* SHORTCUTS */
+.shortcuts {
+  display: flex;
+  gap: 16px;
+  margin-top: 300px;
+  padding-left: 600px;
+  padding-right: 600px;
+  align-items: baseline;
+}
+
+.shortcuts a {
+  width: 52px;
+  height: 52px;
+  background: #1d9bf0;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  text-decoration: none;
+  font-size: 20px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+  <div class="clock" id="clock">00:00</div>
+
+  <div class="user">
+    Sinan Valiyy😂😂<br>
+    <small id="date"></small>
   </div>
+
+  <div class="search">
+    <input type="text" placeholder="Type here…">
+    <button>Search</button>
+  </div>
+
+  <div class="quote">
+    “Education costs money. But then so does ignorance.”<br>
+    <small>— Sir Claus Moser</small>
+  </div>
+  <div class="shortcuts">
+    <a href="https://youtube.com">▶</a>
+    <a href="https://instagram.com">◎</a>
+    <a href="https://mail.google.com">✉</a>
+    <a href="https://web.telegram.org">✈</a>
+  </div>
+</div>
+
+<script>
+function updateTime() {
+  const now = new Date();
+  document.getElementById("clock").innerText =
+    now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  document.getElementById("date").innerText =
+    now.toDateString();
+}
+setInterval(updateTime, 1000);
+updateTime();
+</script>
+
 </body>
 </html>
