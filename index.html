@@ -37,6 +37,15 @@ body {
   font-size: 18px;
 }
 
+#username {
+  cursor: pointer;
+}
+
+#username:focus {
+  outline: none;
+  border-bottom: 1px dashed #0f172a;
+}
+
 /* SEARCH */
 .search {
   display: flex;
@@ -62,19 +71,22 @@ body {
   font-size: 16px;
 }
 
-/* AYAH */
+/* ARABIC AYAH */
 .ayah {
-  margin-top: 34px;
-  font-size: 26px;        /* 👈 BIGGER */
-  line-height: 2;         /* 👈 MORE BREATHING SPACE */
-  font-family: "Scheherazade New", "Amiri", serif;
+  margin-top: 26px;
+  font-size: 18px;
+  line-height: 2;
+  font-family: "Amiri", "Scheherazade New", serif;
+  direction: rtl;
+  opacity: 0.9;
 }
 
 .ayah small {
   display: block;
-  margin-top: 12px;
-  font-size: 15px;
-  opacity: 0.75;
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: 0.6;
+  direction: ltr;
 }
 
 /* SHORTCUTS */
@@ -82,7 +94,7 @@ body {
   display: flex;
   justify-content: center;
   gap: 16px;
-  margin-top: 40px;
+  margin-top: 38px;
 }
 
 .shortcuts a {
@@ -107,7 +119,7 @@ body {
   <div class="clock" id="clock">00:00</div>
 
   <div class="user">
-    Sinan Valiyy🤣🤣<br>
+    <span id="username" onclick="editName()">Touch to edit...</span><br>
     <small id="date"></small>
   </div>
 
@@ -117,7 +129,7 @@ body {
   </form>
 
   <div class="ayah" id="ayah">
-    Loading ayah…
+    جاري تحميل الآية…
   </div>
 
   <div class="shortcuts">
@@ -151,20 +163,38 @@ function doSearch(e) {
   }
 }
 
-/* RANDOM AYAH */
+/* EDITABLE NAME */
+const nameEl = document.getElementById("username");
+
+function loadName() {
+  const savedName = localStorage.getItem("username");
+  if (savedName) nameEl.innerText = savedName;
+}
+
+function editName() {
+  nameEl.contentEditable = "true";
+  nameEl.focus();
+}
+
+nameEl.addEventListener("blur", () => {
+  nameEl.contentEditable = "false";
+  localStorage.setItem("username", nameEl.innerText.trim());
+});
+
+loadName();
+
+/* RANDOM ARABIC AYAH */
 fetch("https://api.alquran.cloud/v1/ayah/random")
   .then(res => res.json())
   .then(data => {
     const a = data.data;
     document.getElementById("ayah").innerHTML =
-      `${a.text}<small>— Surah ${a.surah.englishName}, Ayah ${a.numberInSurah}</small>`;
+      `${a.text}<small>— سورة ${a.surah.name} · آية ${a.numberInSurah}</small>`;
   })
   .catch(() => {
-    document.getElementById("ayah").innerText =
-      "Unable to load ayah right now.";
+    document.getElementById("ayah").innerText = "";
   });
 </script>
 
 </body>
 </html>
-
